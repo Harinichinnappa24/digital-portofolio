@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e1e1e1;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #quiz-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color:green;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .option {
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background-color: #1a1aff;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        button{
+            border-radius: 10px;
+            font-size: 15px;
+            margin-top: 20px;
+            background-color: red;
+            color: white;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "What is the capital of France?",
+            options: ["Berlin", "Madrid", "Paris", "Rome"],
+            correctAnswer: "Paris"
+        },
+        {
+            question: "Which planet is known as the Red Planet?",
+            options: ["Earth", "Mars", "Jupiter", "Saturn"],
+            correctAnswer: "Mars"
+        },
+        {
+            question: "What is the largest mammal?",
+            options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+            correctAnswer: "Blue Whale"
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+
+        questionElement.textContent = questions[currentQuestion].question;
+
+        optionsElement.innerHTML = "";
+        for (const option of questions[currentQuestion].options) {
+            const optionElement = document.createElement('div');
+            optionElement.className = 'option';
+            optionElement.textContent = option;
+            optionElement.onclick = () => checkAnswer(option);
+            optionsElement.appendChild(optionElement);
+        }
+    }
+
+    function checkAnswer(selectedOption) {
+        if (selectedOption === questions[currentQuestion].correctAnswer) {
+            score++;
+        }
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        const resultElement = document.getElementById('result');
+        resultElement.textContent = `Your score: ${score} out of ${questions.length}`;
+    }
+
+    function nextQuestion() {
+        const resultElement = document.getElementById('result');
+        resultElement.textContent = "";
+
+        if (currentQuestion < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+    
+    loadQuestion();
+</script>
+
+</body>
+</html>
